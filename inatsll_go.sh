@@ -46,10 +46,20 @@ install_go() {
 # 主函数
 main() {
     # 检查操作系统类型
-    if [[ -e /etc/redhat-release ]]; then
-        release="centos"
-    elif [[ -e /etc/lsb-release ]]; then
-        release="ubuntu"
+    if [[ -f /etc/redhat-release ]]; then
+		release="centos"
+	elif cat /etc/issue | grep -q -E -i "debian"; then
+		release="debian"
+	elif cat /etc/issue | grep -q -E -i "ubuntu"; then
+		release="ubuntu"
+	elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
+		release="centos"
+	elif cat /proc/version | grep -q -E -i "debian"; then
+		release="debian"
+	elif cat /proc/version | grep -q -E -i "ubuntu"; then
+		release="ubuntu"
+	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
+		release="centos"
     else
         print_error "不支持的操作系统！"
         exit 1
